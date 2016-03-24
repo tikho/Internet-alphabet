@@ -1,0 +1,14 @@
+.letter-big{
+	font-size: 1000%;
+	font-weight: lighter;
+	text-transform: uppercase;
+		display: inline-block;
+
+}
+
+.letter-small{
+	margin-left: 1vw;
+	font-size: 800%;
+	font-weight: lighter;
+	display: inline-block;
+}
