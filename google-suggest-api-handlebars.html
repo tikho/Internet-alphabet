@@ -14,21 +14,20 @@
 </head>
 <body class="container">
 
-
-<!-- <script id="alphabet" type="text/x-handlebars-template">
+ <script id="alphabet" type="text/x-handlebars-template">
   <div class="row">
-    {{#each suggest}}
+    {{#each data}}
     <div class="col-xs-6 col-sm-4">
-      <h1 class="letter-big">{{letter}}</h1>
+      <h1 class="letter-big"></h1>
       <ul class="letter-list">
-        <li>{{suggest}}</li>
+        <li></li>
       </ul>
     </div>
     {{/each}}
   </div>
-</script> -->
+</script>
 
-
+</body>
 
 <script>
 var suggestCallBack; // global var for autocomplete jsonp
@@ -55,43 +54,18 @@ $(document).ready(function () {
 
           data = data.sort(); //sorting alphabetically
 
-          $.each(data[1], function(key, val) {
-              suggestions.push("<a href='http://www.google.com/search?q=" + val + "'><li id='" + key + "'>" + val + "</li></a>");
+          console.log(data);
+
+          var source   = $("#alphabet").html();
+          var template = Handlebars.compile(source);
+
+          var html = template(data);
+          $('body').append(html);
+
+          Handlebars.registerHelper('letter', function() {
+            return data[0];
           });
 
-
-          if (counter % 3 == 0){
-            rowCount = Math.floor(counter / 3);
-            $("<div/>", {
-              "class": "row rownumber-" + rowCount
-            }).appendTo("body");
-            rowCountClass = ".rownumber-" + rowCount;
-          }
-
-          $("<div/>", {
-            "class": "col-xs-6 col-sm-4 " + "letter-" + counter
-          }).appendTo(rowCountClass);
-
-          letterCountClass = ".letter-" + counter;
-
-          $("<h1/>", {
-            "class": "letter-big " + counter,
-            html: alphabet[counter]
-          }).appendTo(letterCountClass);
-
-          $("<span/>", {
-            "class": "letter-small " + counter,
-            html: alphabet[counter]
-          }).appendTo(letterCountClass);
-
-          suggestionsNeeded = suggestions.slice(0 + counter * 10, 10 + counter * 10);
-
-          $("<ul/>", {
-            "class": "letter-list" + counter,
-            html: suggestionsNeeded.join( "" )
-          }).appendTo(letterCountClass);
-
-          counter += 1;
       };
     });
 
@@ -99,6 +73,4 @@ $(document).ready(function () {
 
 });
 </script>
- 
-</body>
 </html>
