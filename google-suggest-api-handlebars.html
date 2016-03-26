@@ -16,11 +16,13 @@
 
  <script id="alphabet" type="text/x-handlebars-template">
   <div class="row">
-    {{#each data}}
+    {{#each this}}
     <div class="col-xs-6 col-sm-4">
-      <h1 class="letter-big"></h1>
+      <h1 class="letter-big">{{letter}}</h1>
       <ul class="letter-list">
-        <li></li>
+        {{#each suggests}}
+        <li>{{this}}</li>
+        {{/each}}
       </ul>
     </div>
     {{/each}}
@@ -32,7 +34,7 @@
 <script>
 var suggestCallBack; // global var for autocomplete jsonp
 var counter = 0;
-var suggestions = [];
+var googleResponseArray = [];
 
 $(document).ready(function () {
 
@@ -52,22 +54,39 @@ $(document).ready(function () {
 
       suggestCallBack = function (data) {
 
-          data = data.sort(); //sorting alphabetically
+          googleResponseArray.push(data);
 
-          console.log(data);
+          counter++;
 
-          var source   = $("#alphabet").html();
-          var template = Handlebars.compile(source);
+          if (counter == 26){
+            googleResponseArray = googleResponseArray.sort(function(a,b){
+              if (a[0] < b[0])
+                return -1;
+              if (a[0] > b[0])
+                return 1;
+              return 0;
+            }); // sorted array. Time to push it in object
 
-          var html = template(data);
-          $('body').append(html);
+            var suggestionsWithLetters = [];
+            for (var i = 0; i < googleResponseArray.length; i++) {
+              var suggestWithLetter = {
+                letter: googleResponseArray[i][0],
+                suggests: googleResponseArray[i][1]
+              };
+              suggestionsWithLetters.push(suggestWithLetter);
+            }
 
-          Handlebars.registerHelper('letter', function() {
-            return data[0];
-          });
+            var source   = $("#alphabet").html();
+            var template = Handlebars.compile(source);
+
+            var html = template(suggestionsWithLetters);
+            $('body').append(html);
+
+          }
 
       };
     });
+
 
 //TO-DO:Searching images
 
