@@ -12,22 +12,27 @@
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 </head>
-<body class="container">
+<body>
+
+<div class="container-fluid">
 
  <script id="alphabet" type="text/x-handlebars-template">
   <div class="row">
     {{#each this}}
     <div class="col-xs-6 col-sm-4">
       <h1 class="letter-big">{{letter}}</h1>
+      <h1 class="letter-small">{{letter}}</h1>
       <ul class="letter-list">
         {{#each suggests}}
-        <li>{{this}}</li>
+        <a href="http://www.google.com/search?q={{this}}"><li>{{this}}</li></a>
         {{/each}}
       </ul>
     </div>
     {{/each}}
   </div>
 </script>
+
+</div>
 
 </body>
 
@@ -87,6 +92,14 @@ $(document).ready(function () {
       };
     });
 
+  Handlebars.registerHelper('ifIsNthItem', function(options) {
+    var index = options.data.view.contentIndex + 1,
+        nth = options.hash.nth;
+    
+    if (index % nth === 1) {//every first index
+      return options.fn(this);
+    }
+  });
 
 //TO-DO:Searching images
 
