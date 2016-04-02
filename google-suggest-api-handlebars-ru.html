@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
     <!-- Latest compiled and minified Bootstrap CSS -->
@@ -14,25 +14,25 @@
 </head>
 <body>
 
-<div class="container-fluid">
-
- <script id="alphabet" type="text/x-handlebars-template">
-  <div class="row">
-    {{#each this}}
-    <div class="col-xs-6 col-sm-4">
-      <h1 class="letter-big">{{letter}}</h1>
-      <h1 class="letter-small">{{letter}}</h1>
-      <ul class="letter-list">
-        {{#each suggests}}
-        <a href="http://www.google.com/search?q={{this}}"><li>{{this}}</li></a>
+<script id="alphabet" type="text/x-handlebars-template">
+  <div class="container">
+    {{#grouped_each 3 this}}
+      <div class="row">
+        {{#each this}}
+        <div class="col-xs-6 col-sm-4 alphabet-letter-block">
+          <h1 class="letter-big">{{letter}}</h1>
+          <h1 class="letter-small">{{letter}}</h1>
+          <ul class="letter-list">
+            {{#each suggests}}
+            <a href="http://www.google.com/search?q={{this}}"><li>{{this}}</li></a>
+            {{/each}}
+          </ul>
+        </div>
         {{/each}}
-      </ul>
-    </div>
-    {{/each}}
+      </div>
+    {{/grouped_each}}
   </div>
 </script>
-
-</div>
 
 </body>
 
@@ -43,7 +43,8 @@ var googleResponseArray = [];
 
 $(document).ready(function () {
 
-  var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+  // var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+  var alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".split("");
 
   $.each(alphabet, function(letter) {
 
@@ -52,8 +53,8 @@ $(document).ready(function () {
           "hl":"en", // Language                  
           "jsonp":"suggestCallBack", // jsonp callback function name
           "q":alphabet[letter], // query term
-          // "client":"youtube" // force youtube style response, i.e. jsonp
-          "output":"firefox"
+          "client":"firefox" // force youtube style response, i.e. jsonp
+          // "output":"firefox"
         }
       );
 
@@ -63,7 +64,7 @@ $(document).ready(function () {
 
           counter++;
 
-          if (counter == 26){
+          if (counter == alphabet.length){
             googleResponseArray = googleResponseArray.sort(function(a,b){
               if (a[0] < b[0])
                 return -1;
@@ -71,6 +72,14 @@ $(document).ready(function () {
                 return 1;
               return 0;
             }); // sorted array. Time to push it in object
+
+            if (alphabet.indexOf('ё') > -1 && 
+                typeof googleResponseArray != 'undefined' && 
+                googleResponseArray.length > 0)
+            {
+              googleResponseArray.splice(6, 0, googleResponseArray.slice(-1)[0]);
+              googleResponseArray.pop();
+            }//checking for "ё"
 
             var suggestionsWithLetters = [];
             for (var i = 0; i < googleResponseArray.length; i++) {
@@ -92,13 +101,20 @@ $(document).ready(function () {
       };
     });
 
-  Handlebars.registerHelper('ifIsNthItem', function(options) {
-    var index = options.data.view.contentIndex + 1,
-        nth = options.hash.nth;
-    
-    if (index % nth === 1) {//every first index
-      return options.fn(this);
-    }
+
+  Handlebars.registerHelper('grouped_each', function(every, context, options) {
+      var out = "", subcontext = [], i;
+      if (context && context.length > 0) {
+          for (i = 0; i < context.length; i++) {
+              if (i > 0 && i % every === 0) {
+                  out += options.fn(subcontext);
+                  subcontext = [];
+              }
+              subcontext.push(context[i]);
+          }
+          out += options.fn(subcontext);
+      }
+      return out;
   });
 
 //TO-DO:Searching images

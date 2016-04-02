@@ -12,3 +12,7 @@
 	font-weight: lighter;
 	display: inline-block;
 }
+
+.alphabet-letter-block{
+	margin: auto;
+}

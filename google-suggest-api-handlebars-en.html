@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+    <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script src="js/handlebars-v4.0.5.js"></script>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+</head>
+<body>
+
+<script id="alphabet" type="text/x-handlebars-template">
+  <div class="container">
+    {{#grouped_each 3 this}}
+      <div class="row">
+        {{#each this}}
+        <div class="col-xs-6 col-sm-4 alphabet-letter-block">
+          <h1 class="letter-big">{{letter}}</h1>
+          <h1 class="letter-small">{{letter}}</h1>
+          <ul class="letter-list">
+            {{#each suggests}}
+            <a href="http://www.google.com/search?q={{this}}"><li>{{this}}</li></a>
+            {{/each}}
+          </ul>
+        </div>
+        {{/each}}
+      </div>
+    {{/grouped_each}}
+  </div>
+</script>
+
+</body>
+
+<script>
+var suggestCallBack; // global var for autocomplete jsonp
+var counter = 0;
+var googleResponseArray = [];
+
+$(document).ready(function () {
+
+  var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+  // var alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".split("");
+
+  $.each(alphabet, function(letter) {
+
+      $.getJSON("http://suggestqueries.google.com/complete/search?callback=?",
+        { 
+          "hl":"en", // Language                  
+          "jsonp":"suggestCallBack", // jsonp callback function name
+          "q":alphabet[letter], // query term
+          // "client":"youtube" // force youtube style response, i.e. jsonp
+          "output":"firefox"
+        }
+      );
+
+      suggestCallBack = function (data) {
+
+          googleResponseArray.push(data);
+
+          counter++;
+
+          if (counter == alphabet.length){
+            googleResponseArray = googleResponseArray.sort(function(a,b){
+              if (a[0] < b[0])
+                return -1;
+              if (a[0] > b[0])
+                return 1;
+              return 0;
+            }); // sorted array. Time to push it in object
+
+            if (alphabet.indexOf('ё') > -1 && 
+                typeof googleResponseArray != 'undefined' && 
+                googleResponseArray.length > 0)
+            {
+              googleResponseArray.splice(6, 0, googleResponseArray.slice(-1)[0]);
+              googleResponseArray.pop();
+            }//checking for "ё"
+
+            var suggestionsWithLetters = [];
+            for (var i = 0; i < googleResponseArray.length; i++) {
+              var suggestWithLetter = {
+                letter: googleResponseArray[i][0],
+                suggests: googleResponseArray[i][1]
+              };
+              suggestionsWithLetters.push(suggestWithLetter);
+            }
+
+            var source   = $("#alphabet").html();
+            var template = Handlebars.compile(source);
+
+            var html = template(suggestionsWithLetters);
+            $('body').append(html);
+
+          }
+
+      };
+    });
+
+
+  Handlebars.registerHelper('grouped_each', function(every, context, options) {
+      var out = "", subcontext = [], i;
+      if (context && context.length > 0) {
+          for (i = 0; i < context.length; i++) {
+              if (i > 0 && i % every === 0) {
+                  out += options.fn(subcontext);
+                  subcontext = [];
+              }
+              subcontext.push(context[i]);
+          }
+          out += options.fn(subcontext);
+      }
+      return out;
+  });
+
+//TO-DO:Searching images
+
+});
+</script>
+</html>
