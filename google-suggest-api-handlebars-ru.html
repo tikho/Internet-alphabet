@@ -13,6 +13,13 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 </head>
 <body>
+<!-- <div class="container">
+  <div class="row header">
+    <div class="logo-area text-center">
+      <h1>ИНТЕРНЕТ АЛФАВИТ</h1>
+    </div>
+  </div>
+</div> -->
 
 <script id="alphabet" type="text/x-handlebars-template">
   <div class="container">
@@ -53,8 +60,8 @@ $(document).ready(function () {
           "hl":"en", // Language                  
           "jsonp":"suggestCallBack", // jsonp callback function name
           "q":alphabet[letter], // query term
-          "client":"firefox" // force youtube style response, i.e. jsonp
-          // "output":"firefox"
+          // "client":"firefox" // force youtube style response, i.e. jsonp
+          "output":"chrome"
         }
       );
 

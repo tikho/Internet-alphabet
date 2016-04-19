@@ -11,6 +11,7 @@
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+
 </head>
 <body>
 
@@ -24,7 +25,12 @@
           <h1 class="letter-small">{{letter}}</h1>
           <ul class="letter-list">
             {{#each suggests}}
-            <a href="http://www.google.com/search?q={{this}}"><li>{{this}}</li></a>
+              <div class="suggest-url-and-image">
+                <a class="suggest-url" href="http://www.google.com/search?q={{this}}">
+                  <li>{{this}}</li>
+                  <img class="suggest-image {{this}}"/>
+                </a>
+              </div>
             {{/each}}
           </ul>
         </div>
@@ -54,7 +60,7 @@ $(document).ready(function () {
           "jsonp":"suggestCallBack", // jsonp callback function name
           "q":alphabet[letter], // query term
           // "client":"youtube" // force youtube style response, i.e. jsonp
-          "output":"firefox"
+          "output":"chrome"
         }
       );
 
@@ -117,7 +123,29 @@ $(document).ready(function () {
       return out;
   });
 
+  $('li').hover(
+    function(){
+      console.log(this.innerHTML);
+      $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+        {
+            tags: this.innerHTML,
+            tagmode: "any",
+            format: "json"
+        },
+        function(data) {
+            var image_src = data.items[0]['media']['m'].replace("_m", "_b");
+
+            $('.suggest-image ' + this.innerHTML).css('background-image', "url('" + image_src + "')");
+
+        });
+    }, function(){
+
+    }
+    );
+
 //TO-DO:Searching images
+
+
 
 });
 </script>

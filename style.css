@@ -16,3 +16,19 @@
 .alphabet-letter-block{
 	margin: auto;
 }
+
+.logo-area{
+	letter-spacing: 1vw;
+}
+
+.suggest-image{
+	float:right;
+	width: 5vw;
+	height: auto;
+	/*margin-bottom:0;*/
+	/*display:none;*/
+}
+
+.suggest-url{
+	/*display: inline-block;*/
+}
