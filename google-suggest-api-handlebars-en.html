@@ -5,32 +5,28 @@
     <!-- Latest compiled and minified Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="style.css">
-
-  <script src="js/handlebars-v4.0.5.js"></script>
-
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+  <script src="js/handlebars-v4.0.5.js"></script>
 
 </head>
 <body>
 
 <script id="alphabet" type="text/x-handlebars-template">
   <div class="container">
-    {{#grouped_each 3 this}}
+    {{#grouped_each 4 this}}
       <div class="row">
         {{#each this}}
-        <div class="col-xs-6 col-sm-4 alphabet-letter-block">
+        <div class="col-xs-6 col-md-3 col-sm-6 alphabet-letter-block">
           <h1 class="letter-big">{{letter}}</h1>
           <h1 class="letter-small">{{letter}}</h1>
           <ul class="letter-list">
             {{#each suggests}}
-              <div class="suggest-url-and-image">
-                <a class="suggest-url" href="http://www.google.com/search?q={{this}}">
-                  <li>{{this}}</li>
-                  <img class="suggest-image {{this}}"/>
-                </a>
-              </div>
+                  <li>                
+                    <a class="suggest-url" href="https://www.google.com/search?q={{this}}">{{text-url}}</a>
+                    <!-- <img class="suggest-image-{{this}}"/> -->
+                  </li>
             {{/each}}
           </ul>
         </div>
@@ -40,9 +36,8 @@
   </div>
 </script>
 
-</body>
-
 <script>
+
 var suggestCallBack; // global var for autocomplete jsonp
 var counter = 0;
 var googleResponseArray = [];
@@ -50,6 +45,7 @@ var googleResponseArray = [];
 $(document).ready(function () {
 
   var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+
   // var alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".split("");
 
   $.each(alphabet, function(letter) {
@@ -123,30 +119,47 @@ $(document).ready(function () {
       return out;
   });
 
-  $('li').hover(
-    function(){
-      console.log(this.innerHTML);
+  Handlebars.registerHelper('text-url', function(){
+  	var suggest = this;
+  	// console.log(suggest);
+  	if (suggest.length > 26){
+  		suggest = suggest.slice(0, 26);
+  		suggest += "..."
+  	}
+	
+  	return suggest;
+
+  });
+
+//TO-DO:Searching images
+
+});
+
+</script>
+
+<!-- <script>
+$(function(){
+  $("body").on("mouseover", '.suggest-url', function(e){
+  	  var href = e.target.attributes.href.value;
+  	  var q = href.slice(31, href);
+
+      var flickrQuery = "internet," + q;
       $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
         {
-            tags: this.innerHTML,
+            tags: flickrQuery,
             tagmode: "any",
             format: "json"
         },
         function(data) {
             var image_src = data.items[0]['media']['m'].replace("_m", "_b");
-
-            $('.suggest-image ' + this.innerHTML).css('background-image', "url('" + image_src + "')");
-
+            var image_class_name = "." + e.target.className + "-" + q;
+            $("body").find(image_class_name).attr('src', image_src);
+            console.log(image_src);
         });
-    }, function(){
-
-    }
-    );
-
-//TO-DO:Searching images
-
-
-
+  });
 });
-</script>
+</script> -->
+
+</body>
+
 </html>
