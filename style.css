@@ -1,8 +1,13 @@
- .letter-big{
+body{
+
+}
+
+.letter-big{
 	font-size: 1000%;
 	font-weight: lighter;
 	text-transform: uppercase;
 	display: inline-block;
+	margin-left: -2.5%;
 }
 
 .letter-small{
@@ -18,30 +23,97 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 50px;
-	/*max-width: 25%;*/
 }
 
 .logo-area{
 	letter-spacing: 1vw;
 }
 
-.suggest-image{
-	float:right;
-	width: 5vw;
-	height: auto;
-	/*margin-bottom:0;*/
-	/*display:none;*/
-}
-
-.suggest-url{
-	/*display: inline-block;*/
+.center-block{
+	float:none;
 }
 
 .letter-list{
 	line-height: 1.7em;
-	padding-left: 2%;
+	padding-left: 0;
 	list-style: none;
 }
+
+.phrase-list{
+	line-height: 1.7em;
+	padding-left: 0;
+	list-style: none;
+}
+
+.phrase{
+	font-weight: bold;
+}
+
+.top{
+	margin-top: 50px;
+}
+
+.logo{
+	width: 900px;
+	height: 150px;
+	background-color: black;
+}
+
+.bonus{
+	margin-top: 50px;
+	background-color: rgba(180, 180, 180, 0.2);
+	width: 100%;
+/*	padding-left: 20%;
+	padding-right: 20%;*/
+	padding-bottom: 100px;
+}
+
+.bonus-header{
+	text-align: center;
+	font-size: 800%;
+	font-weight: lighter;
+	margin-top: 50px;
+	margin-left: -15px;
+	letter-spacing: 0.8vw;
+}
+
+.phrase-block{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 25px;
+	/*padding-left: -15%;*/
+}
+
+.explainer-block{
+	margin-top: 25px;
+}
+
+.explainer{
+	text-align: center;
+}
+
+.center-block{
+	float:none;
+}	
+
+.made-by{
+	margin-top:50px;
+	text-align: center;
+	margin-bottom: 25px;
+}
+
+.language-selector{
+	margin-top: -25px;
+	text-align: center;
+	letter-spacing: 0.2vw;
+	margin-bottom: 50px;
+}
+
+.language-selector span{
+	/*margin: ;*/
+}
+
 
 a{
 	text-decoration: none;
