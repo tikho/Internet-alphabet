@@ -1,5 +1,12 @@
-body{
+.center-block{
+	float:none;
+}
 
+.alphabet-letter-block{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
 }
 
 .letter-big{
@@ -17,26 +24,18 @@ body{
 	display: inline-block;
 }
 
+.letter-list{
+	line-height: 1.7em;
+	padding-left: 0;
+	list-style: none;
+}
 
-.alphabet-letter-block{
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+.top{
 	margin-top: 50px;
 }
 
 .logo-area{
 	letter-spacing: 1vw;
-}
-
-.center-block{
-	float:none;
-}
-
-.letter-list{
-	line-height: 1.7em;
-	padding-left: 0;
-	list-style: none;
 }
 
 .phrase-list{
@@ -49,14 +48,36 @@ body{
 	font-weight: bold;
 }
 
-.top{
-	margin-top: 50px;
+.logo{
+	font-size: 800%;
+	line-height: 1.2em;
+	font-family: arial, sans-serif;
+	font-weight: bold;
+	text-align: center;
 }
 
-.logo{
-	width: 900px;
-	height: 150px;
-	background-color: black;
+#cursor {
+	font-family: "Helvetica Neue";
+	font-weight: 100;
+	position: relative;
+	top: -10px;
+	animation: blink-animation 1s steps(2, start) infinite;
+	-webkit-animation: blink-animation 1s steps(2, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+
+#cursor{
+	/*font-weight: lighter;*/
 }
 
 .bonus{
@@ -98,7 +119,7 @@ body{
 }	
 
 .made-by{
-	margin-top:50px;
+	margin-top:25px;
 	text-align: center;
 	margin-bottom: 25px;
 }
@@ -110,16 +131,28 @@ body{
 	margin-bottom: 50px;
 }
 
-.language-selector span{
-	/*margin: ;*/
+.sharing-block{
+	text-align: center;
 }
 
+.addthis_native_toolbox{
+	display: inline-block;
+}
+
+.addthis_native_toolbox a{
+	border-bottom: 0;
+	text-align: center;
+}
+
+.footer{
+	margin-top: 50px;
+}
 
 a{
 	text-decoration: none;
 	border-bottom: 1px solid rgba(0, 0, 255, 0.2);
 }
 
-a:hover{
+a:hover, a:active, a:visited, a:focus{
 	text-decoration: none;
 }

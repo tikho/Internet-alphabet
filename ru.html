@@ -23,13 +23,13 @@
 <!--       <span>EN</span>
       <span><a href="ru.html">RU</a></span> -->
 
-     <span><a href="/en.html">EN</a></span>
+     <span><a href="en.html">EN</a></span>
       <span>RU</span>
 
     </div>
 
     <div class="logo center-block">
-      
+      <span>интернет алфавит</span><span id="cursor">|</span>
     </div>
     <div class="explainer-block">
       <p class="explainer center-block">Подсказки Гугла для каждой буквы русского алфавита собранные </p>
@@ -46,6 +46,8 @@
 
   <div class="footer container">
     <div class="sharing-block center-block">
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_native_toolbox center-block"></div>
 <!--      <span class='st_vkontakte_hcount' displayText='Vkontakte'></span>
       <span class='st_fblike_hcount' displayText='Facebook Like'></span>
       <span class='st_twitter_hcount' displayText='Tweet'></span>
@@ -83,7 +85,7 @@
 
 
   <script id="bonus" type="text/x-handlebars-template">
-  <h1 class="bonus-header">Bonus track</h1>
+  <h1 class="bonus-header">Бонус трэк</h1>
     <div class="container">
       {{#grouped_each 3 this}}
         <div class="row">
@@ -174,7 +176,7 @@
   });
 
   //getting bonus phrases
-  var bonus = ["как сохранить ", "где можно ", "что нужно делать чтобы ", "я хочу чтобы ", "как называется ", "я ударил ", "почему бы не ", "однажды я ", "что делать если ", "почему я всегда ", "безопасно ли ", "как мне "];
+  var bonus = ["как сохранить ", "где можно ", "почему ", "я хочу чтобы ", "как называется ", "я ударил ", "почему бы не ", "однажды я ", "что делать если ", "почему я всегда ", "безопасно ли ", "как мне "];
 
   var phraseGoogleResponseArray = [];
   var phraseCounter = 0;
@@ -263,6 +265,10 @@
   // $(".explainer").text(explainerText + moment().locale("en").format('MMMM Do YYYY, h:mm:ss a'));
 
   </script>
+
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57589586e90cbb07"></script>
+
 
   </body>
 
