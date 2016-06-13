@@ -80,7 +80,7 @@
 	/*font-weight: lighter;*/
 }
 
-.bonus{
+.phrases{
 	margin-top: 50px;
 	background-color: rgba(180, 180, 180, 0.2);
 	width: 100%;
@@ -89,7 +89,7 @@
 	padding-bottom: 100px;
 }
 
-.bonus-header{
+.phrases-header{
 	text-align: center;
 	font-size: 800%;
 	font-weight: lighter;

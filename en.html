@@ -2,6 +2,9 @@
 	<html lang="en">
 	<head>
 	<meta charset="utf-8">
+
+	<title>internet alphabet</title>
+
 	<!-- Latest compiled and minified Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="style.css">
@@ -10,6 +13,10 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 	<script src="js/handlebars-v4.0.5.js"></script>
 	<script src="js/moment-with-locales.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+	<script src="js/jstorage.js"></script>
 
 	</head>
 	<body>
@@ -20,9 +27,6 @@
 
 			<span>EN</span>
 			<span><a href="ru.html">RU</a></span>
-
-<!-- 			<span><a href="/en.html">EN</a></span>
-			<span>RU</span> -->
 
 		</div>
 
@@ -38,7 +42,7 @@
 		<!-- rendered by handlebars -->
 	</div>
 
-	<div class="bonus container">
+	<div class="phrases container">
 		<!-- rendered by handlebars -->
 	</div>
 
@@ -46,12 +50,6 @@
 		<div class="sharing-block center-block">
 			<!-- Go to www.addthis.com/dashboard to customize your tools -->
 			<div class="addthis_native_toolbox center-block"></div>
-<!-- 			<span class='st_fblike_hcount' displayText='Facebook Like'></span>
-			<span class='st_vkontakte_hcount' displayText='Vkontakte'></span>
-			<span class='st_twitter_hcount' displayText='Tweet'></span>
-			<span class='st_livejournal_hcount' displayText='LiveJournal'></span>
-			<span class='st_odnoklassniki_hcount' displayText='Odnoklassniki'></span>
-			<span class='st_plusone_hcount' displayText='Google +1'></span> -->
 		</div>
 		<div class="made-by">
 			Made by <a class="made-by-link" href="http://www.tikho.ru">Ivan Tikhomirov</a>
@@ -81,8 +79,8 @@
 	</script>
 
 
-	<script id="bonus" type="text/x-handlebars-template">
-	<h1 class="bonus-header">Bonus track</h1>
+	<script id="phrases" type="text/x-handlebars-template">
+	<h1 class="phrases-header">Bonus track</h1>
 		<div class="container">
 			{{#grouped_each 3 this}}
 			  <div class="row">
@@ -112,154 +110,225 @@
 
 	$(document).ready(function () {
 
-	var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+		var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 
-	// var alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".split("");
+		var phrases = ["how to keep ", "where can i ", "why does ", "i want to ", "what is called ", "i punched ", "why don't ", "one time i ", "what to do if ", "why i always ", "is it safe to ", "how do i "];
 
-	$.each(alphabet, function(letter) {
 
-	  $.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
-	    { 
-	      "hl":"en", // Language   
-	      // "hl":"ru",               
-	      "jsonp":"suggestCallBack", // jsonp callback function name
-	      "q":alphabet[letter], // query term
-	      // "client":"youtube" // force youtube style response, i.e. jsonp
-	      "output":"chrome"
-	    }
-	  );
+		// console.log($.jStorage.get("time", "no time") + " " + $.jStorage.get("suggestionsWithLetters", "no alphabet") + " " + $.jStorage.get("suggestionsWithPhrases", "no phrases"));
 
-	  suggestCallBack = function (data) {
+		if ($.jStorage.get("time-en", "no time yet") === "no time yet"){
+			// console.log("user came first time — no stored values");
 
-	      googleResponseArray.push(data);
+			renderNew(alphabet, phrases);
 
-	      counter++;
+		} else {
+			// console.log("user was here — use stored time to check when he came last time");
+				
+		      var now = moment().locale("en").format('DD.MM.YYYY HH:mm');
+		      var storedTime = $.jStorage.get("time-en");
 
-	      if (counter == alphabet.length){
-	        googleResponseArray = googleResponseArray.sort(function(a,b){
-	          if (a[0] < b[0])
-	            return -1;
-	          if (a[0] > b[0])
-	            return 1;
-	          return 0;
-	        }); // sorted array. Time to push it in object
+		      var timeDifference = moment(now, 'DD.MM.YYYY HH:mm').diff(moment(storedTime, 'DD.MM.YYYY HH:mm'));
+		      var timeDuration = moment.duration(timeDifference);
+		      var hourDifference = timeDuration.asHours();
 
-	        if (alphabet.indexOf('ё') > -1 && 
-	            typeof googleResponseArray != 'undefined' && 
-	            googleResponseArray.length > 0)
-	        {
-	          googleResponseArray.splice(6, 0, googleResponseArray.slice(-1)[0]);
-	          googleResponseArray.pop();
-	        }//checking for "ё"
+			if (hourDifference < 0.5){
+				// console.log("last time was less than hour ago, render stored values");
 
-	        var suggestionsWithLetters = [];
-	        for (var i = 0; i < googleResponseArray.length; i++) {
-	          var suggestWithLetter = {
-	            letter: googleResponseArray[i][0],
-	            suggests: googleResponseArray[i][1]
-	          };
-	          suggestionsWithLetters.push(suggestWithLetter);
-	        }
+				renderStored();
 
-	        var source   = $("#alphabet").html();
+
+			} else {
+				// console.log("last time was longer than hour ago, refresh data and render");
+
+				renderNew(alphabet, phrases);
+
+			}
+
+		}
+
+
+		function renderNew(alphabet, phrases){
+
+			$.each(alphabet, function(letter) {
+
+				  $.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
+				    { 
+				      "hl":"en", // Language   
+				      "jsonp":"suggestCallBack", // jsonp callback function name
+				      "q":alphabet[letter], // query term
+				      "output":"chrome"
+				    }
+				  );
+
+				  suggestCallBack = function (data) {
+
+				      googleResponseArray.push(data);
+
+				      counter++;
+
+				      if (counter == alphabet.length){
+				        googleResponseArray = googleResponseArray.sort(function(a,b){
+				          if (a[0] < b[0])
+				            return -1;
+				          if (a[0] > b[0])
+				            return 1;
+				          return 0;
+				        }); // sorted array. Time to push it in object
+
+				        // if (alphabet.indexOf('ё') > -1 && 
+				        //     typeof googleResponseArray != 'undefined' && 
+				        //     googleResponseArray.length > 0)
+				        // {
+				        //   googleResponseArray.splice(6, 0, googleResponseArray.slice(-1)[0]);
+				        //   googleResponseArray.pop();
+				        // }//checking for "ё"
+
+				        var suggestionsWithLetters = [];
+				        for (var i = 0; i < googleResponseArray.length; i++) {
+				          var suggestWithLetter = {
+				            letter: googleResponseArray[i][0],
+				            suggests: googleResponseArray[i][1]
+				          };
+				          suggestionsWithLetters.push(suggestWithLetter);
+				        }
+
+				        var source   = $("#alphabet").html();
+				        var template = Handlebars.compile(source);
+
+				        var html = template(suggestionsWithLetters);
+				        $('.alphabet').append(html);
+
+				        //store alphabet JSON locally
+				        $.jStorage.set("suggestionsWithLetters-en", suggestionsWithLetters);
+				      }
+
+				  };
+			});
+
+
+			var phraseGoogleResponseArray = [];
+			var phraseCounter = 0;
+
+			$.each(phrases, function(phrase) {
+
+				$.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
+					{ 
+					  "hl":"en", // Language   
+					  "jsonp":"phraseSuggestCallBack", // jsonp callback function name
+					  "q":phrases[phrase], // query term
+					  "output":"chrome"
+					}
+			  	);
+
+			  	phraseSuggestCallBack = function(data) {
+
+			  		phraseGoogleResponseArray.push(data);
+			  		phraseCounter++;
+
+			  		if (phraseCounter == phrases.length){
+
+			            phraseGoogleResponseArray = phraseGoogleResponseArray.sort(function(a,b){
+			              if (a[0] < b[0])
+			                return -1;
+			              if (a[0] > b[0])
+			                return 1;
+			              return 0;
+			            }); // sorted array. Time to push it in object
+
+				        var suggestionsWithPhrases = [];
+				        for (var i = 0; i < phraseGoogleResponseArray.length; i++) {
+			          	  // console.log(phraseGoogleResponseArray)
+				          var suggestWithPhrase = {
+				            phrase: phraseGoogleResponseArray[i][0],
+				            suggests: phraseGoogleResponseArray[i][1]
+				          };
+				          suggestionsWithPhrases.push(suggestWithPhrase);
+				        }
+
+				  		var source   = $("#phrases").html();
+				        var template = Handlebars.compile(source);
+
+				        var html = template(suggestionsWithPhrases);
+				        $('.phrases').append(html);
+
+				        //store phrases JSON locally
+				        $.jStorage.set("suggestionsWithPhrases-en", suggestionsWithPhrases);
+			  		}
+			  	};
+			});
+	        
+
+	        var currentTime = moment().locale("en").format('MMMM Do YYYY, h:mm a');
+	        $.jStorage.set("time-en", currentTime);
+
+			var explainerText = $(".explainer").text();
+
+			$(".explainer").text(explainerText + currentTime);
+
+		}
+
+		function renderStored(){
+
+			// console.log("rendering stored alphabet suggestions");
+
+			var suggestionsWithLetters = $.jStorage.get("suggestionsWithLetters-en");
+
+			var source   = $("#alphabet").html();
 	        var template = Handlebars.compile(source);
 
 	        var html = template(suggestionsWithLetters);
 	        $('.alphabet').append(html);
 
-	      }
 
-	  };
-	});
 
-	//getting bonus phrases
-	var bonus = ["how to keep ", "where can i ", "why does ", "i want to ", "what is called ", "i punched ", "why don't ", "one time i ", "what to do if ", "why i always ", "is it safe to ", "how do i "];
+			// console.log("rendering stored phrases suggestions");
 
-	var phraseGoogleResponseArray = [];
-	var phraseCounter = 0;
+			var suggestionsWithPhrases = $.jStorage.get("suggestionsWithPhrases-en");
 
-	$.each(bonus, function(phrase) {
+	  		var source   = $("#phrases").html();
+	        var template = Handlebars.compile(source);
 
-		$.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
-			{ 
-			  "hl":"en", // Language   
-			  // "hl":"ru",               
-			  "jsonp":"phraseSuggestCallBack", // jsonp callback function name
-			  "q":bonus[phrase], // query term
-			  // "client":"youtube" // force youtube style response, i.e. jsonp
-			  "output":"chrome"
-			}
-	  	);
+	        var html = template(suggestionsWithPhrases);
+	        $('.phrases').append(html);
 
-	  	phraseSuggestCallBack = function(data) {
 
-	  		phraseGoogleResponseArray.push(data);
-	  		phraseCounter++;
+	        var storedTime = $.jStorage.get("time-en");
 
-	  		if (phraseCounter == bonus.length){
+			var explainerText = $(".explainer").text();
 
-	            phraseGoogleResponseArray = phraseGoogleResponseArray.sort(function(a,b){
-	              if (a[0] < b[0])
-	                return -1;
-	              if (a[0] > b[0])
-	                return 1;
-	              return 0;
-	            }); // sorted array. Time to push it in object
+			$(".explainer").text(explainerText + storedTime);
 
-		        var suggestionsWithPhrases = [];
-		        for (var i = 0; i < phraseGoogleResponseArray.length; i++) {
-	          	  console.log(phraseGoogleResponseArray)
-		          var suggestWithPhrase = {
-		            phrase: phraseGoogleResponseArray[i][0],
-		            suggests: phraseGoogleResponseArray[i][1]
-		          };
-		          suggestionsWithPhrases.push(suggestWithPhrase);
-		        }
-
-		  		var source   = $("#bonus").html();
-		        var template = Handlebars.compile(source);
-
-		        var html = template(suggestionsWithPhrases);
-		        $('.bonus').append(html);
-	  		}
-	  	};
-	});
-
-	Handlebars.registerHelper('grouped_each', function(every, context, options) {
-	  var out = "", subcontext = [], i;
-	  if (context && context.length > 0) {
-	      for (i = 0; i < context.length; i++) {
-	          if (i > 0 && i % every === 0) {
-	              out += options.fn(subcontext);
-	              subcontext = [];
-	          }
-	          subcontext.push(context[i]);
-	      }
-	      out += options.fn(subcontext);
-	  }
-	  return out;
-	});
-
-	Handlebars.registerHelper('text-url', function(){
-		var suggest = this;
-		// console.log(suggest);
-		if (suggest.length > 26){
-			suggest = suggest.slice(0, 26);
-			suggest += "..."
 		}
 
-		return suggest;
-
 	});
 
-	//TO-DO:Searching images
+		Handlebars.registerHelper('grouped_each', function(every, context, options) {
+		  var out = "", subcontext = [], i;
+		  if (context && context.length > 0) {
+		      for (i = 0; i < context.length; i++) {
+		          if (i > 0 && i % every === 0) {
+		              out += options.fn(subcontext);
+		              subcontext = [];
+		          }
+		          subcontext.push(context[i]);
+		      }
+		      out += options.fn(subcontext);
+		  }
+		  return out;
+		});
 
-	});
+		Handlebars.registerHelper('text-url', function(){
+			var suggest = this;
+			// console.log(suggest);
+			if (suggest.length > 26){
+				suggest = suggest.slice(0, 26);
+				suggest += "..."
+			}
 
-	var explainerText = $(".explainer").text();
+			return suggest;
 
-	// $(".explainer").text(explainer + moment().locale("ru").format('MMMM Do YYYY, h:mm:ss a'));
-	$(".explainer").text(explainerText + moment().locale("en").format('MMMM Do YYYY, h:mm a'));
+		});
 
 	</script>
 
