@@ -133,7 +133,7 @@
 		      var hourDifference = timeDuration.asHours();
 
 			if (hourDifference < 0.5){
-				// console.log("last time was less than hour ago, render stored values");
+				console.log("last time was less than hour ago, render stored values" + " " + hourDifference + " timeDuration: " + timeDuration + " timeDifference:" + timeDifference + " storedTime: " + storedTime + " now: " + now);
 
 				renderStored();
 
@@ -259,7 +259,7 @@
 			});
 	        
 
-	        var currentTime = moment().locale("en").format('MMMM Do YYYY, h:mm a');
+	        var currentTime = moment().locale("en").format('DD.MM.YYYY HH:mm');
 	        $.jStorage.set("time-en", currentTime);
 
 			var explainerText = $(".explainer").text();
