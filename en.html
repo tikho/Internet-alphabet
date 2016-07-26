@@ -1,4 +1,4 @@
-	<!doctype html>
+	<!DOCTYPE html>
 	<html lang="en">
 	<head>
 	<meta charset="utf-8">
@@ -75,7 +75,7 @@
 			<span>internet alphabet</span><span id="cursor">|</span>
 		</div>
 		<div class="explainer-block">
-			<p class="explainer center-block">Google suggests for each english letter gathered at </p>
+			<p class="explainer center-block">Google suggests for each english letter gathered </p>
 		</div>
 	</div>
 
@@ -148,6 +148,7 @@
 	var suggestCallBack; // global var for autocomplete jsonp
 	var counter = 0;
 	var googleResponseArray = [];
+	var googleImages = [];
 
 	$(document).ready(function () {
 
@@ -215,15 +216,7 @@
 				          if (a[0] > b[0])
 				            return 1;
 				          return 0;
-				        }); // sorted array. Time to push it in object
-
-				        // if (alphabet.indexOf('ё') > -1 && 
-				        //     typeof googleResponseArray != 'undefined' && 
-				        //     googleResponseArray.length > 0)
-				        // {
-				        //   googleResponseArray.splice(6, 0, googleResponseArray.slice(-1)[0]);
-				        //   googleResponseArray.pop();
-				        // }//checking for "ё"
+				        });
 
 				        var suggestionsWithLetters = [];
 				        for (var i = 0; i < googleResponseArray.length; i++) {
@@ -303,6 +296,9 @@
 	        var currentTime = moment().locale("en").format('DD.MM.YYYY HH:mm');
 	        $.jStorage.set("time-en", currentTime);
 
+	        currentTime = moment(currentTime, 'DD.MM.YYYY HH:mm').locale("en").fromNow();
+	        // console.log(currentTime);
+
 			var explainerText = $(".explainer").text();
 
 			$(".explainer").text(explainerText + currentTime);
@@ -336,9 +332,14 @@
 
 	        var storedTime = $.jStorage.get("time-en");
 
+            storedTime = moment(storedTime, 'DD.MM.YYYY HH:mm').locale("en").fromNow();
+  			// console.log(storedTime);
+
 			var explainerText = $(".explainer").text();
 
 			$(".explainer").text(explainerText + storedTime);
+
+			getImagesFromSuggestsList(suggestionsWithLetters);
 
 		}
 
@@ -370,6 +371,106 @@
 			return suggest;
 
 		});
+
+
+		function getImagesFromSuggestsList(suggestsList){
+			for (var i = 0; i < suggestsList.length; i++){
+				var suggests = suggestsList[i].suggests;
+
+				imageWp(suggests);
+
+				// console.log(suggests);
+				// for (var j = 0; j < suggests.length; j++){
+				// 	suggest = suggests[j];
+				// 	$.get('https://www.google.com/search?q=' + suggest, function(data) {
+				//     	var imgs = $('img[alt*="' + suggest +'"]');
+				//     	console.log(imgs);
+				// 	});
+				// }
+			}
+		}
+
+		function imageWp(words) {
+
+		    for (var i = 0; i < words.length; i++){
+
+		    	word = words[i];
+
+				var searchUrl = 'https://en.wikipedia.org/w/api.php';
+
+			    var ajaxArticleData = function (search) {
+			        $.ajax({
+			            url: searchUrl,
+			            dataType: 'jsonp',
+			            data: {
+			                //main parameters
+			                action: 'query',
+			                format: 'json',
+			                redirects: 1,
+			                converttitles: 1,
+			                titles: search,
+
+			                generator: 'images',
+			                    //parameters for generator
+			                    // gsrsearch: search,
+			                    gsrnamespace: 0,
+			                    gsrlimit: 20,
+			                    // gsrlimit:1,
+			                prop: 'pageimages|',
+			                // prop: 'extracts|pageimages|',
+			                    //parameters for extracts
+			                    // exchars: 200,
+			                    // exlimit: 'max',
+			                    // explaintext: true,
+			                    // exintro: true,
+
+			                    //parameters for pageimages
+			                    piprop: 'thumbnail',
+			                    pilimit: '20',
+			                    pithumbsize: 300
+			            },
+			            success: function (json) {
+
+			            	if (json){
+			            		if (json.query){
+					                var pages = json.query.pages;
+
+					                $.map(pages, function (page) {
+					                	if (page.thumbnail){
+						                	console.log(search + " === " + page.thumbnail.source);
+						            	}
+					                });
+			            		}
+
+			            	}
+
+			                // $.map(pages, function (page) {
+			                //     var pageElement = $('<div>');
+
+			                //     //get the article title
+			                //     pageElement.append($('<h2>').text(page.title));
+
+			                //     //get the article image (if exists)
+			                //     if (page.thumbnail) pageElement.append($('<img>').attr('width', 150).attr('src', page.thumbnail.source));
+
+			                //     //get the article text
+			                //     pageElement.append($('<p>').text(page.extract));
+
+			                //     pageElement.append($('<hr>'));
+
+			                //     articles.append(pageElement);
+			                // });
+			            }
+			        });
+
+		   	 	}
+
+		        ajaxArticleData(word);
+
+			}
+		}
+
+
 
 	</script>
 

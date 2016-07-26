@@ -299,8 +299,11 @@
       });
           
 
-          var currentTime = moment().locale("ru").format('DD.MM.YYYY HH:mm');
-          $.jStorage.set("time-ru", currentTime);
+      var currentTime = moment().locale("ru").format('DD.MM.YYYY HH:mm');
+      $.jStorage.set("time-ru", currentTime);
+
+      currentTime = moment(currentTime, 'DD.MM.YYYY HH:mm').locale("ru").fromNow();
+      // console.log(currentTime);
 
       var explainerText = $(".explainer").text();
 
@@ -335,9 +338,14 @@
 
           var storedTime = $.jStorage.get("time-ru");
 
+      storedTime = moment(storedTime, 'DD.MM.YYYY HH:mm').locale("ru").fromNow();
+      // console.log(storedTime);
+
       var explainerText = $(".explainer").text();
 
       $(".explainer").text(explainerText + storedTime);
+
+      getImagesFromSuggestsList(suggestionsWithLetters);
 
     }
 
@@ -369,6 +377,106 @@
       return suggest;
 
     });
+
+    function getImagesFromSuggestsList(suggestsList){
+      for (var i = 0; i < suggestsList.length; i++){
+        var suggests = suggestsList[i].suggests;
+
+        imageWp(suggests);
+
+        // console.log(suggests);
+        // for (var j = 0; j < suggests.length; j++){
+        //  suggest = suggests[j];
+        //  $.get('https://www.google.com/search?q=' + suggest, function(data) {
+        //      var imgs = $('img[alt*="' + suggest +'"]');
+        //      console.log(imgs);
+        //  });
+        // }
+      }
+    }
+
+    function imageWp(words) {
+
+        for (var i = 0; i < words.length; i++){
+
+          word = words[i];
+
+        var searchUrl = 'https://ru.wikipedia.org/w/api.php';
+
+          var ajaxArticleData = function (search) {
+              $.ajax({
+                  url: searchUrl,
+                  dataType: 'jsonp',
+                  data: {
+                      //main parameters
+                      action: 'query',
+                      format: 'json',
+                      redirects: 1,
+                      converttitles: 1,
+                      titles: search,
+                      uselang: "content",
+
+                      generator: 'images',
+                          //parameters for generator
+                          // gsrsearch: search,
+                          gsrnamespace: 0,
+                          gsrlimit: 20,
+                          // gsrlimit:1,
+                      prop: 'pageimages|',
+                      // prop: 'extracts|pageimages|',
+                          //parameters for extracts
+                          // exchars: 200,
+                          // exlimit: 'max',
+                          // explaintext: true,
+                          // exintro: true,
+
+                          //parameters for pageimages
+                          piprop: 'thumbnail',
+                          pilimit: '20',
+                          pithumbsize: 300
+                  },
+                  success: function (json) {
+
+                    if (json){
+                      if (json.query){
+                          var pages = json.query.pages;
+
+                          $.map(pages, function (page) {
+                            if (page.thumbnail){
+                              console.log(search + " === " + page.thumbnail.source);
+                              // console.log(page.title);
+                          }
+                          });
+                      }
+
+                    }
+
+                      // $.map(pages, function (page) {
+                      //     var pageElement = $('<div>');
+
+                      //     //get the article title
+                      //     pageElement.append($('<h2>').text(page.title));
+
+                      //     //get the article image (if exists)
+                      //     if (page.thumbnail) pageElement.append($('<img>').attr('width', 150).attr('src', page.thumbnail.source));
+
+                      //     //get the article text
+                      //     pageElement.append($('<p>').text(page.extract));
+
+                      //     pageElement.append($('<hr>'));
+
+                      //     articles.append(pageElement);
+                      // });
+                  }
+              });
+
+          }
+
+            ajaxArticleData(word);
+
+      }
+    }
+
 
   </script>
 
