@@ -1,483 +1,492 @@
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-	<meta charset="utf-8">
-
-	<title>internet alphabet</title>
-
-	<!-- Latest compiled and minified Bootstrap CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-	<script src="js/handlebars-v4.0.5.js"></script>
-	<script src="js/moment-with-locales.js"></script>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-	<script src="js/jstorage.js"></script>
-
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-	  ga('create', 'UA-81248495-1', 'auto');
-	  ga('send', 'pageview');
-
-	</script>
-
-	  <!-- Yandex.Metrika counter -->
-	  <script type="text/javascript">
-	      (function (d, w, c) {
-	          (w[c] = w[c] || []).push(function() {
-	              try {
-	                  w.yaCounter38668260 = new Ya.Metrika({
-	                      id:38668260,
-	                      clickmap:true,
-	                      trackLinks:true,
-	                      accurateTrackBounce:true
-	                  });
-	              } catch(e) { }
-	          });
-
-	          var n = d.getElementsByTagName("script")[0],
-	              s = d.createElement("script"),
-	              f = function () { n.parentNode.insertBefore(s, n); };
-	          s.type = "text/javascript";
-	          s.async = true;
-	          s.src = "https://mc.yandex.ru/metrika/watch.js";
-
-	          if (w.opera == "[object Opera]") {
-	              d.addEventListener("DOMContentLoaded", f, false);
-	          } else { f(); }
-	      })(document, window, "yandex_metrika_callbacks");
-	  </script>
-	  <noscript><div><img src="https://mc.yandex.ru/watch/38668260" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-	  <!-- /Yandex.Metrika counter -->
-
-
-	</head>
-	<body>
-
-	<div class="top container">
-
-		<div class="language-selector">
-
-			<span>EN</span>
-			<span><a href="http://www.internetalphabet.ru/">RU</a></span>
-
-		</div>
-
-		<div class="logo center-block">
-			<span>internet alphabet</span><span id="cursor">|</span>
-		</div>
-		<div class="explainer-block">
-			<p class="explainer center-block">Google suggests for each english letter gathered </p>
-		</div>
-	</div>
-
-	<div class="alphabet">
-		<!-- rendered by handlebars -->
-	</div>
-
-	<div class="phrases container">
-		<!-- rendered by handlebars -->
-	</div>
-
-	<div class="footer container">
-		<div class="sharing-block center-block">
-			<!-- Go to www.addthis.com/dashboard to customize your tools -->
-			<div class="addthis_native_toolbox center-block"></div>
-		</div>
-		<div class="made-by">
-			Made by <a class="made-by-link" href="http://www.tikho.ru">Ivan Tikhomirov</a>
-		</div>
-	</div>
-
-	<script id="alphabet" type="text/x-handlebars-template">
-	<div class="container">
-	{{#grouped_each 4 this}}
-	  <div class="row">
-	    {{#each this}}
-	    <div class="col-xs-6 col-md-3 col-sm-6 alphabet-letter-block">
-	      <h1 class="letter-big">{{letter}}</h1>
-	      <h1 class="letter-small">{{letter}}</h1>
-	      <ul class="letter-list">
-	        {{#each suggests}}
-	              <li>                
-	                <a class="suggest-url" href="https://www.google.com/search?q={{this}}">{{text-url}}</a>
-	              </li>
-	        {{/each}}
-	      </ul>
-	    </div>
-	    {{/each}}
-	  </div>
-	{{/grouped_each}}
-	</div>
-	</script>
+  <!doctype html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+
+  <title>интернет алфавит</title>
+
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+  <script src="js/handlebars-v4.0.5.js"></script>
+  <script src="js/moment-with-locales.js"></script>
+  <script src="js/jstorage.js"></script>
+  <script src="js/okhover.js"></script>
+
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-81248495-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+      (function (d, w, c) {
+          (w[c] = w[c] || []).push(function() {
+              try {
+                  w.yaCounter38668260 = new Ya.Metrika({
+                      id:38668260,
+                      clickmap:true,
+                      trackLinks:true,
+                      accurateTrackBounce:true
+                  });
+              } catch(e) { }
+          });
+
+          var n = d.getElementsByTagName("script")[0],
+              s = d.createElement("script"),
+              f = function () { n.parentNode.insertBefore(s, n); };
+          s.type = "text/javascript";
+          s.async = true;
+          s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+          if (w.opera == "[object Opera]") {
+              d.addEventListener("DOMContentLoaded", f, false);
+          } else { f(); }
+      })(document, window, "yandex_metrika_callbacks");
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/38668260" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  </head>
+  <body>
+
+  <div class="top container">
+
+    <div class="language-selector">
+
+		<span>EN</span>
+		<span><a href="http://www.internetalphabet.ru/">RU</a></span>
+
+    </div>
+
+    <div class="logo center-block">
+      <span>internet alphabet</span><span id="cursor">|</span>
+    </div>
+    <div class="explainer-block">
+      <p class="explainer center-block">Google suggests for each english letter gathered </p>
+    </div>
+  </div>
+
+  <div class="alphabet">
+    <!-- rendered by handlebars -->
+  </div>
+
+  <div class="phrases container">
+    <!-- rendered by handlebars -->
+  </div>
+
+  <div class="footer container">
+    <div class="sharing-block center-block">
+      <!-- Go to www.addthis.com/dashboard to customize your tools -->
+      <div class="addthis_native_toolbox center-block"></div>
+    </div>
+    <div class="made-by">
+      Made by <a class="made-by-link" href="http://www.tikho.ru">Ivan Tikhomirov</a>
+    </div>
+  </div>
+
+  <script id="alphabet" type="text/x-handlebars-template">
+  <div class="container">
+  {{#grouped_each 4 this}}
+    <div class="row">
+      {{#each this}}
+      <div class="col-xs-6 col-md-3 col-sm-6 alphabet-letter-block">
+        <h1 class="letter-big">{{letter}}</h1>
+        <h1 class="letter-small">{{letter}}</h1>
+        <ul class="letter-list">
+          {{#each suggests}}
+            <a class="alphabet-suggest-url okhover"  data-okimage="" href="https://www.google.com/search?q={{this}}">
+            <li class="alphabet-list-element">
+              <span class="link-text">
+                {{text-url}}
+              </span>        
+           </li>
+            </a>
+          {{/each}}
+        </ul>
+      </div>
+      {{/each}}
+    </div>
+  {{/grouped_each}}
+  </div>
+  </script>
+
 
-
-	<script id="phrases" type="text/x-handlebars-template">
-	<h1 class="phrases-header">Bonus track</h1>
-		<div class="container">
-			{{#grouped_each 3 this}}
-			  <div class="row">
-			    {{#each this}}
-			    <div class="col-xs-12 col-sm-6 col-md-4 phrase-block">
-			      <p class="phrase">{{phrase}}</p>
-			      <ul class="phrase-list">
-			        {{#each suggests}}
-			              <li class="phrase-suggest">                
-			                <a class="suggest-url" href="https://www.google.com/search?q={{this}}">{{this}}</a>
-			              </li>
-			        {{/each}}
-			      </ul>
-			    </div>
-			    {{/each}}
-			  </div>
-			{{/grouped_each}}
-		</div>
-	</script>
+  <script id="phrases" type="text/x-handlebars-template">
+  <h1 class="phrases-header">Бонус трэк</h1>
+    <div class="container">
+      {{#grouped_each 3 this}}
+        <div class="row">
+          {{#each this}}
+          <div class="col-xs-12 col-sm-6 col-md-4 phrase-block">
+            <p class="phrase">{{phrase}}</p>
+            <ul class="phrase-list">
+              {{#each suggests}}
+                    <li class="phrase-suggest">                
+                      <a class="suggest-url" href="https://www.google.com/search?q={{this}}">{{this}}</a>
+                    </li>
+              {{/each}}
+            </ul>
+          </div>
+          {{/each}}
+        </div>
+      {{/grouped_each}}
+    </div>
+  </script>
+
+
+  <script>
+
+  var suggestCallBack; // global var for autocomplete jsonp
+  var counter = 0;
+  var googleResponseArray = [];
+  var imagesForSuggests = [];
+
+
+  $(document).ready(function () {
+
+	var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+
+	var phrases = ["how to keep ", "where can i ", "why does ", "i want to ", "what is called ", "i punched ", "why don't ", "one time i ", "what to do if ", "why i always ", "is it safe to ", "how do i "];
+
+    // console.log($.jStorage.get("time", "no time") + " " + $.jStorage.get("suggestionsWithLetters", "no alphabet") + " " + $.jStorage.get("suggestionsWithPhrases", "no phrases"));
+
+    if ($.jStorage.get("time-en", "no time yet") === "no time yet"){
+      // console.log("user came first time — no stored values");
+
+      renderNew(alphabet, phrases);
+
+    } else {
+      // console.log("user was here — use stored time to check when he came last time");
+        
+      var now = moment().locale("en").format('DD.MM.YYYY HH:mm');
+      var storedTime = $.jStorage.get("time-en");
+
+      var timeDifference = moment(now, 'DD.MM.YYYY HH:mm').diff(moment(storedTime, 'DD.MM.YYYY HH:mm'));
+      var timeDuration = moment.duration(timeDifference);
+      var hourDifference = timeDuration.asHours();
+
+      if (hourDifference < 0.5){
+        // console.log("last time was less than hour ago, render stored values" + " " + hourDifference + " timeDuration: " + timeDuration + " timeDifference:" + timeDifference + " storedTime: " + storedTime + " now: " + now);
 
+        renderStored();
+
+
+      } else {
+        // console.log("last time was longer than hour ago, refresh data and render");
+
+        renderNew(alphabet, phrases);
+
+      }
+
+    }
+
+
+    function renderNew(alphabet, phrases){
+
+      $.each(alphabet, function(letter) {
+
+          $.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
+            { 
+              "hl":"en", // Language   
+              "jsonp":"suggestCallBack", // jsonp callback function name
+              "q":alphabet[letter], // query term
+              "output":"chrome"
+            }
+          );
+
+          suggestCallBack = function (data) {
+
+              googleResponseArray.push(data);
+
+              counter++;
+
+              if (counter == alphabet.length){
+
+                googleResponseArray = googleResponseArray.sort(function(a,b){
+                  if (a[0] < b[0])
+                    return -1;
+                  if (a[0] > b[0])
+                    return 1;
+                  return 0;
+                }); // sorted array. Time to push it in object
+
+                var suggestionsWithLetters = [];
+                var suggestionsForImages = [];
+                for (var i = 0; i < googleResponseArray.length; i++) {
+                  var suggestsArray = googleResponseArray[i][1];
+                  var suggestWithLetter = {
+                    letter: googleResponseArray[i][0],
+                    suggests: suggestsArray
+                  };
+                  suggestionsWithLetters.push(suggestWithLetter);
+                  for (var j = 0; j < suggestsArray.length; j++){
+                    suggestionsForImages.push(suggestsArray[j]);
+                  }
+                }
 
-	<script>
+                var source   = $("#alphabet").html();
+                var template = Handlebars.compile(source);
 
-	var suggestCallBack; // global var for autocomplete jsonp
-	var counter = 0;
-	var googleResponseArray = [];
-	var googleImages = [];
+                var html = template(suggestionsWithLetters);
+                $('.alphabet').append(html);
 
-	$(document).ready(function () {
-
-		var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-
-		var phrases = ["how to keep ", "where can i ", "why does ", "i want to ", "what is called ", "i punched ", "why don't ", "one time i ", "what to do if ", "why i always ", "is it safe to ", "how do i "];
-
-
-		// console.log($.jStorage.get("time", "no time") + " " + $.jStorage.get("suggestionsWithLetters", "no alphabet") + " " + $.jStorage.get("suggestionsWithPhrases", "no phrases"));
+                getImages();
 
-		if ($.jStorage.get("time-en", "no time yet") === "no time yet"){
-			// console.log("user came first time — no stored values");
+                $('.okhover').okhover({
+                    fadeIn: true,
+                    fadeOut: true,
+                    fadeInDuration: 200
+                }); 
 
-			renderNew(alphabet, phrases);
+                //store alphabet JSON locally
+                $.jStorage.set("suggestionsWithLetters-en", suggestionsWithLetters);
+              }
 
-		} else {
-			// console.log("user was here — use stored time to check when he came last time");
-				
-		      var now = moment().locale("en").format('DD.MM.YYYY HH:mm');
-		      var storedTime = $.jStorage.get("time-en");
-
-		      var timeDifference = moment(now, 'DD.MM.YYYY HH:mm').diff(moment(storedTime, 'DD.MM.YYYY HH:mm'));
-		      var timeDuration = moment.duration(timeDifference);
-		      var hourDifference = timeDuration.asHours();
-
-			if (hourDifference < 0.5){
-				// console.log("last time was less than hour ago, render stored values" + " " + hourDifference + " timeDuration: " + timeDuration + " timeDifference:" + timeDifference + " storedTime: " + storedTime + " now: " + now);
-
-				renderStored();
-
-
-			} else {
-				// console.log("last time was longer than hour ago, refresh data and render");
-
-				renderNew(alphabet, phrases);
-
-			}
-
-		}
-
-
-		function renderNew(alphabet, phrases){
-
-			$.each(alphabet, function(letter) {
-
-				  $.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
-				    { 
-				      "hl":"en", // Language   
-				      "jsonp":"suggestCallBack", // jsonp callback function name
-				      "q":alphabet[letter], // query term
-				      "output":"chrome"
-				    }
-				  );
-
-				  suggestCallBack = function (data) {
-
-				      googleResponseArray.push(data);
+          };
+      });
 
-				      counter++;
 
-				      if (counter == alphabet.length){
-				        googleResponseArray = googleResponseArray.sort(function(a,b){
-				          if (a[0] < b[0])
-				            return -1;
-				          if (a[0] > b[0])
-				            return 1;
-				          return 0;
-				        });
+      var phraseGoogleResponseArray = [];
+      var phraseCounter = 0;
 
-				        var suggestionsWithLetters = [];
-				        for (var i = 0; i < googleResponseArray.length; i++) {
-				          var suggestWithLetter = {
-				            letter: googleResponseArray[i][0],
-				            suggests: googleResponseArray[i][1]
-				          };
-				          suggestionsWithLetters.push(suggestWithLetter);
-				        }
+      $.each(phrases, function(phrase) {
 
-				        var source   = $("#alphabet").html();
-				        var template = Handlebars.compile(source);
+        $.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
+          { 
+            "hl":"en", // Language   
+            "jsonp":"phraseSuggestCallBack", // jsonp callback function name
+            "q":phrases[phrase], // query term
+            "output":"chrome"
+          }
+          );
 
-				        var html = template(suggestionsWithLetters);
-				        $('.alphabet').append(html);
+          phraseSuggestCallBack = function(data) {
 
-				        //store alphabet JSON locally
-				        $.jStorage.set("suggestionsWithLetters-en", suggestionsWithLetters);
-				      }
+            phraseGoogleResponseArray.push(data);
+            phraseCounter++;
 
-				  };
-			});
+            if (phraseCounter == phrases.length){
 
+                  phraseGoogleResponseArray = phraseGoogleResponseArray.sort(function(a,b){
+                    if (a[0] < b[0])
+                      return -1;
+                    if (a[0] > b[0])
+                      return 1;
+                    return 0;
+                  }); // sorted array. Time to push it in object
 
-			var phraseGoogleResponseArray = [];
-			var phraseCounter = 0;
+                var suggestionsWithPhrases = [];
+                for (var i = 0; i < phraseGoogleResponseArray.length; i++) {
+                    // console.log(phraseGoogleResponseArray)
+                  var suggestWithPhrase = {
+                    phrase: phraseGoogleResponseArray[i][0],
+                    suggests: phraseGoogleResponseArray[i][1]
+                  };
+                  suggestionsWithPhrases.push(suggestWithPhrase);
+                }
 
-			$.each(phrases, function(phrase) {
+              var source   = $("#phrases").html();
+                var template = Handlebars.compile(source);
 
-				$.getJSON("https://suggestqueries.google.com/complete/search?callback=?",
-					{ 
-					  "hl":"en", // Language   
-					  "jsonp":"phraseSuggestCallBack", // jsonp callback function name
-					  "q":phrases[phrase], // query term
-					  "output":"chrome"
-					}
-			  	);
+                var html = template(suggestionsWithPhrases);
+                $('.phrases').append(html);
 
-			  	phraseSuggestCallBack = function(data) {
+                //store phrases JSON locally
+                $.jStorage.set("suggestionsWithPhrases-en", suggestionsWithPhrases);
+            }
+          };
+      });
+          
 
-			  		phraseGoogleResponseArray.push(data);
-			  		phraseCounter++;
+      var currentTime = moment().locale("en").format('DD.MM.YYYY HH:mm');
+      $.jStorage.set("time-en", currentTime);
 
-			  		if (phraseCounter == phrases.length){
+      currentTime = moment(currentTime, 'DD.MM.YYYY HH:mm').locale("en").fromNow();
+      // console.log(currentTime);
 
-			            phraseGoogleResponseArray = phraseGoogleResponseArray.sort(function(a,b){
-			              if (a[0] < b[0])
-			                return -1;
-			              if (a[0] > b[0])
-			                return 1;
-			              return 0;
-			            }); // sorted array. Time to push it in object
+      var explainerText = $(".explainer").text();
 
-				        var suggestionsWithPhrases = [];
-				        for (var i = 0; i < phraseGoogleResponseArray.length; i++) {
-			          	  // console.log(phraseGoogleResponseArray)
-				          var suggestWithPhrase = {
-				            phrase: phraseGoogleResponseArray[i][0],
-				            suggests: phraseGoogleResponseArray[i][1]
-				          };
-				          suggestionsWithPhrases.push(suggestWithPhrase);
-				        }
+      $(".explainer").text(explainerText + currentTime);
 
-				  		var source   = $("#phrases").html();
-				        var template = Handlebars.compile(source);
+    }
 
-				        var html = template(suggestionsWithPhrases);
-				        $('.phrases').append(html);
+    function renderStored(){
 
-				        //store phrases JSON locally
-				        $.jStorage.set("suggestionsWithPhrases-en", suggestionsWithPhrases);
-			  		}
-			  	};
-			});
-	        
+      // console.log("rendering stored alphabet suggestions");
 
-	        var currentTime = moment().locale("en").format('DD.MM.YYYY HH:mm');
-	        $.jStorage.set("time-en", currentTime);
+      var suggestionsWithLetters = $.jStorage.get("suggestionsWithLetters-en");
 
-	        currentTime = moment(currentTime, 'DD.MM.YYYY HH:mm').locale("en").fromNow();
-	        // console.log(currentTime);
+      var source   = $("#alphabet").html();
+      var template = Handlebars.compile(source);
 
-			var explainerText = $(".explainer").text();
+      var html = template(suggestionsWithLetters);
+      $('.alphabet').append(html);
 
-			$(".explainer").text(explainerText + currentTime);
 
-		}
+      var imagesAndSuggests = $.jStorage.get("imagesAndSuggests-en");
 
-		function renderStored(){
+      function addImageToSuggests(text, imageSource){
+        var jSpot=$("span:contains(" + text + ")")
+          .filter(function(){ return $(this).children().length === 0;})
+          .parent().parent();
+        jSpot.attr("data-okimage", imageSource);
+        return jSpot;
+      }
 
-			// console.log("rendering stored alphabet suggestions");
+      for (var i = 0; i < imagesAndSuggests.length; i++){
 
-			var suggestionsWithLetters = $.jStorage.get("suggestionsWithLetters-en");
+        var imageAndSuggest = imagesAndSuggests[i];
+        addImageToSuggests(imageAndSuggest.suggest, imageAndSuggest.imageSource);
 
-			var source   = $("#alphabet").html();
-	        var template = Handlebars.compile(source);
+      }
 
-	        var html = template(suggestionsWithLetters);
-	        $('.alphabet').append(html);
+      $('.okhover').okhover({
+        fadeIn: true,
+        fadeOut: true,
+        fadeInDuration: 200
+      }); 
 
+      // console.log("rendering stored phrases suggestions");
 
+      var suggestionsWithPhrases = $.jStorage.get("suggestionsWithPhrases-en");
 
-			// console.log("rendering stored phrases suggestions");
+        var source   = $("#phrases").html();
+          var template = Handlebars.compile(source);
 
-			var suggestionsWithPhrases = $.jStorage.get("suggestionsWithPhrases-en");
+          var html = template(suggestionsWithPhrases);
+          $('.phrases').append(html);
 
-	  		var source   = $("#phrases").html();
-	        var template = Handlebars.compile(source);
 
-	        var html = template(suggestionsWithPhrases);
-	        $('.phrases').append(html);
+          var storedTime = $.jStorage.get("time-en");
 
+      storedTime = moment(storedTime, 'DD.MM.YYYY HH:mm').locale("en").fromNow();
+      // console.log(storedTime);
 
-	        var storedTime = $.jStorage.get("time-en");
+      var explainerText = $(".explainer").text();
 
-            storedTime = moment(storedTime, 'DD.MM.YYYY HH:mm').locale("en").fromNow();
-  			// console.log(storedTime);
+      $(".explainer").text(explainerText + storedTime);
 
-			var explainerText = $(".explainer").text();
+    }
 
-			$(".explainer").text(explainerText + storedTime);
+  });
 
-			getImagesFromSuggestsList(suggestionsWithLetters);
+    Handlebars.registerHelper('grouped_each', function(every, context, options) {
+      var out = "", subcontext = [], i;
+      if (context && context.length > 0) {
+          for (i = 0; i < context.length; i++) {
+              if (i > 0 && i % every === 0) {
+                  out += options.fn(subcontext);
+                  subcontext = [];
+              }
+              subcontext.push(context[i]);
+          }
+          out += options.fn(subcontext);
+      }
+      return out;
+    });
 
-		}
+    Handlebars.registerHelper('text-url', function(){
+      var suggest = this;
+      if (suggest.length > 26){
+        suggest = suggest.slice(0, 26);
+        suggest += "..."
+      }
 
-	});
+      return suggest;
 
-		Handlebars.registerHelper('grouped_each', function(every, context, options) {
-		  var out = "", subcontext = [], i;
-		  if (context && context.length > 0) {
-		      for (i = 0; i < context.length; i++) {
-		          if (i > 0 && i % every === 0) {
-		              out += options.fn(subcontext);
-		              subcontext = [];
-		          }
-		          subcontext.push(context[i]);
-		      }
-		      out += options.fn(subcontext);
-		  }
-		  return out;
-		});
+    });
 
-		Handlebars.registerHelper('text-url', function(){
-			var suggest = this;
-			// console.log(suggest);
-			if (suggest.length > 26){
-				suggest = suggest.slice(0, 26);
-				suggest += "..."
-			}
 
-			return suggest;
+  function getImages(){
 
-		});
+    var searchUrl = 'https://en.wikipedia.org/w/api.php';
 
+    for (var i = 0; i < googleResponseArray.length; i++) {
 
-		function getImagesFromSuggestsList(suggestsList){
-			for (var i = 0; i < suggestsList.length; i++){
-				var suggests = suggestsList[i].suggests;
+        var letter = googleResponseArray[i][0];
 
-				imageWp(suggests);
+        var suggestWithLetter = {
+          letter: letter,
+          suggestsWithImages: []
+        };
+        var suggestArray = googleResponseArray[i][1];
 
-				// console.log(suggests);
-				// for (var j = 0; j < suggests.length; j++){
-				// 	suggest = suggests[j];
-				// 	$.get('https://www.google.com/search?q=' + suggest, function(data) {
-				//     	var imgs = $('img[alt*="' + suggest +'"]');
-				//     	console.log(imgs);
-				// 	});
-				// }
-			}
-		}
+        for (var j = 0; j < suggestArray.length; j++) {
 
-		function imageWp(words) {
+          var getImageForSuggest = function (suggest) {
+            $.ajax({
+                url: searchUrl,
+                dataType: 'jsonp',
+                data: {
+                      action: 'query',
+                      format: 'json',
 
-		    for (var i = 0; i < words.length; i++){
+                      generator: 'search',
+                          gsrsearch: suggest,
+                          gsrnamespace: '0',
+                          gsrlimit: '1',
 
-		    	word = words[i];
+                      prop: 'pageimages',
+                          piprop: 'thumbnail',
+                          pithumbsize: 300
+                },
+                success: function (json) {
 
-				var searchUrl = 'https://en.wikipedia.org/w/api.php';
+                        var imgSRC = "#";
 
-			    var ajaxArticleData = function (search) {
-			        $.ajax({
-			            url: searchUrl,
-			            dataType: 'jsonp',
-			            data: {
-			                //main parameters
-			                action: 'query',
-			                format: 'json',
-			                redirects: 1,
-			                converttitles: 1,
-			                titles: search,
+                        if (typeof json.query === "undefined"){
+                        } else{
 
-			                generator: 'images',
-			                    //parameters for generator
-			                    // gsrsearch: search,
-			                    gsrnamespace: 0,
-			                    gsrlimit: 20,
-			                    // gsrlimit:1,
-			                prop: 'pageimages|',
-			                // prop: 'extracts|pageimages|',
-			                    //parameters for extracts
-			                    // exchars: 200,
-			                    // exlimit: 'max',
-			                    // explaintext: true,
-			                    // exintro: true,
+                          var pages = json.query.pages;
 
-			                    //parameters for pageimages
-			                    piprop: 'thumbnail',
-			                    pilimit: '20',
-			                    pithumbsize: 300
-			            },
-			            success: function (json) {
+                          $.map(pages, function (page) {
+                            if (page.thumbnail){
+                              imgSRC = page.thumbnail.source;
+                              imagesForSuggests.push({"suggest":suggest,"imageSource":imgSRC});
+                              $.jStorage.set("imagesAndSuggests-en", imagesForSuggests);
 
-			            	if (json){
-			            		if (json.query){
-					                var pages = json.query.pages;
+                              function addImageToSuggests(text, imageSource){
+                                var jSpot=$("span:contains(" + text + ")")
+                                  .filter(function(){ return $(this).children().length === 0;})
+                                  .parent().parent();
+                                jSpot.attr("data-okimage", imageSource);
+                                return jSpot;
+                              }
+                              addImageToSuggests(suggest, imgSRC);
 
-					                $.map(pages, function (page) {
-					                	if (page.thumbnail){
-						                	console.log(search + " === " + page.thumbnail.source);
-						            	}
-					                });
-			            		}
+                            }
+                          });
+                        }
+                }
+            });
 
-			            	}
+          }
 
-			                // $.map(pages, function (page) {
-			                //     var pageElement = $('<div>');
+          getImageForSuggest(suggestArray[j]);
+        
+        }
 
-			                //     //get the article title
-			                //     pageElement.append($('<h2>').text(page.title));
+      }
+  }
 
-			                //     //get the article image (if exists)
-			                //     if (page.thumbnail) pageElement.append($('<img>').attr('width', 150).attr('src', page.thumbnail.source));
 
-			                //     //get the article text
-			                //     pageElement.append($('<p>').text(page.extract));
+  </script>
 
-			                //     pageElement.append($('<hr>'));
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57589586e90cbb07"></script>
 
-			                //     articles.append(pageElement);
-			                // });
-			            }
-			        });
 
-		   	 	}
+  </body>
 
-		        ajaxArticleData(word);
-
-			}
-		}
-
-
-
-	</script>
-
-	<!-- Go to www.addthis.com/dashboard to customize your tools -->
-	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57589586e90cbb07"></script>
-
-
-	</body>
-
-	</html>
+  </html>

@@ -13,10 +13,9 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
   <script src="js/handlebars-v4.0.5.js"></script>
   <script src="js/moment-with-locales.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
   <script src="js/jstorage.js"></script>
+  <script src="js/okhover.js"></script>
+
 
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -106,9 +105,13 @@
         <h1 class="letter-small">{{letter}}</h1>
         <ul class="letter-list">
           {{#each suggests}}
-                <li>                
-                  <a class="suggest-url" href="https://www.google.com/search?q={{this}}">{{text-url}}</a>
-                </li>
+            <a class="alphabet-suggest-url okhover"  data-okimage="" href="https://www.google.com/search?q={{this}}">
+            <li class="alphabet-list-element">
+              <span class="link-text">
+                {{text-url}}
+              </span>        
+           </li>
+            </a>
           {{/each}}
         </ul>
       </div>
@@ -147,13 +150,14 @@
   var suggestCallBack; // global var for autocomplete jsonp
   var counter = 0;
   var googleResponseArray = [];
+  var imagesForSuggests = [];
+
 
   $(document).ready(function () {
 
     var alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".split("");
 
     var phrases = ["как сохранить ", "где можно ", "почему ", "я хочу чтобы ", "как называется ", "я ударил ", "почему бы не ", "однажды я ", "что делать если ", "почему я всегда ", "безопасно ли ", "как мне "];
-
 
     // console.log($.jStorage.get("time", "no time") + " " + $.jStorage.get("suggestionsWithLetters", "no alphabet") + " " + $.jStorage.get("suggestionsWithPhrases", "no phrases"));
 
@@ -208,6 +212,7 @@
               counter++;
 
               if (counter == alphabet.length){
+
                 googleResponseArray = googleResponseArray.sort(function(a,b){
                   if (a[0] < b[0])
                     return -1;
@@ -224,13 +229,19 @@
                   googleResponseArray.pop();
                 }//checking for "ё"
 
+
                 var suggestionsWithLetters = [];
+                var suggestionsForImages = [];
                 for (var i = 0; i < googleResponseArray.length; i++) {
+                  var suggestsArray = googleResponseArray[i][1];
                   var suggestWithLetter = {
                     letter: googleResponseArray[i][0],
-                    suggests: googleResponseArray[i][1]
+                    suggests: suggestsArray
                   };
                   suggestionsWithLetters.push(suggestWithLetter);
+                  for (var j = 0; j < suggestsArray.length; j++){
+                    suggestionsForImages.push(suggestsArray[j]);
+                  }
                 }
 
                 var source   = $("#alphabet").html();
@@ -238,6 +249,14 @@
 
                 var html = template(suggestionsWithLetters);
                 $('.alphabet').append(html);
+
+                getImages();
+
+                $('.okhover').okhover({
+                    fadeIn: true,
+                    fadeOut: true,
+                    fadeInDuration: 200
+                }); 
 
                 //store alphabet JSON locally
                 $.jStorage.set("suggestionsWithLetters-ru", suggestionsWithLetters);
@@ -318,12 +337,34 @@
       var suggestionsWithLetters = $.jStorage.get("suggestionsWithLetters-ru");
 
       var source   = $("#alphabet").html();
-          var template = Handlebars.compile(source);
+      var template = Handlebars.compile(source);
 
-          var html = template(suggestionsWithLetters);
-          $('.alphabet').append(html);
+      var html = template(suggestionsWithLetters);
+      $('.alphabet').append(html);
 
 
+      var imagesAndSuggests = $.jStorage.get("imagesAndSuggests-ru");
+
+      function addImageToSuggests(text, imageSource){
+        var jSpot=$("span:contains(" + text + ")")
+          .filter(function(){ return $(this).children().length === 0;})
+          .parent().parent();
+        jSpot.attr("data-okimage", imageSource);
+        return jSpot;
+      }
+
+      for (var i = 0; i < imagesAndSuggests.length; i++){
+
+        var imageAndSuggest = imagesAndSuggests[i];
+        addImageToSuggests(imageAndSuggest.suggest, imageAndSuggest.imageSource);
+
+      }
+
+      $('.okhover').okhover({
+        fadeIn: true,
+        fadeOut: true,
+        fadeInDuration: 200
+      }); 
 
       // console.log("rendering stored phrases suggestions");
 
@@ -344,8 +385,6 @@
       var explainerText = $(".explainer").text();
 
       $(".explainer").text(explainerText + storedTime);
-
-      getImagesFromSuggestsList(suggestionsWithLetters);
 
     }
 
@@ -368,7 +407,6 @@
 
     Handlebars.registerHelper('text-url', function(){
       var suggest = this;
-      // console.log(suggest);
       if (suggest.length > 26){
         suggest = suggest.slice(0, 26);
         suggest += "..."
@@ -378,104 +416,78 @@
 
     });
 
-    function getImagesFromSuggestsList(suggestsList){
-      for (var i = 0; i < suggestsList.length; i++){
-        var suggests = suggestsList[i].suggests;
 
-        imageWp(suggests);
+  function getImages(){
 
-        // console.log(suggests);
-        // for (var j = 0; j < suggests.length; j++){
-        //  suggest = suggests[j];
-        //  $.get('https://www.google.com/search?q=' + suggest, function(data) {
-        //      var imgs = $('img[alt*="' + suggest +'"]');
-        //      console.log(imgs);
-        //  });
-        // }
-      }
-    }
+    var searchUrl = 'https://ru.wikipedia.org/w/api.php';
 
-    function imageWp(words) {
+    for (var i = 0; i < googleResponseArray.length; i++) {
 
-        for (var i = 0; i < words.length; i++){
+        var letter = googleResponseArray[i][0];
 
-          word = words[i];
+        var suggestWithLetter = {
+          letter: letter,
+          suggestsWithImages: []
+        };
+        var suggestArray = googleResponseArray[i][1];
 
-        var searchUrl = 'https://ru.wikipedia.org/w/api.php';
+        for (var j = 0; j < suggestArray.length; j++) {
 
-          var ajaxArticleData = function (search) {
-              $.ajax({
-                  url: searchUrl,
-                  dataType: 'jsonp',
-                  data: {
-                      //main parameters
+          var getImageForSuggest = function (suggest) {
+            $.ajax({
+                url: searchUrl,
+                dataType: 'jsonp',
+                data: {
                       action: 'query',
                       format: 'json',
-                      redirects: 1,
-                      converttitles: 1,
-                      titles: search,
-                      uselang: "content",
 
-                      generator: 'images',
-                          //parameters for generator
-                          // gsrsearch: search,
-                          gsrnamespace: 0,
-                          gsrlimit: 20,
-                          // gsrlimit:1,
-                      prop: 'pageimages|',
-                      // prop: 'extracts|pageimages|',
-                          //parameters for extracts
-                          // exchars: 200,
-                          // exlimit: 'max',
-                          // explaintext: true,
-                          // exintro: true,
+                      generator: 'search',
+                          gsrsearch: suggest,
+                          gsrnamespace: '0',
+                          gsrlimit: '1',
 
-                          //parameters for pageimages
+                      prop: 'pageimages',
                           piprop: 'thumbnail',
-                          pilimit: '20',
                           pithumbsize: 300
-                  },
-                  success: function (json) {
+                },
+                success: function (json) {
 
-                    if (json){
-                      if (json.query){
+                        var imgSRC = "#";
+
+                        if (typeof json.query === "undefined"){
+                        } else{
+
                           var pages = json.query.pages;
 
                           $.map(pages, function (page) {
                             if (page.thumbnail){
-                              console.log(search + " === " + page.thumbnail.source);
-                              // console.log(page.title);
-                          }
+                              imgSRC = page.thumbnail.source;
+                              imagesForSuggests.push({"suggest":suggest,"imageSource":imgSRC});
+                              $.jStorage.set("imagesAndSuggests-ru", imagesForSuggests);
+
+                              function addImageToSuggests(text, imageSource){
+                                var jSpot=$("span:contains(" + text + ")")
+                                  .filter(function(){ return $(this).children().length === 0;})
+                                  .parent().parent();
+                                jSpot.attr("data-okimage", imageSource);
+                                return jSpot;
+                              }
+                              addImageToSuggests(suggest, imgSRC);
+
+                            }
                           });
-                      }
-
-                    }
-
-                      // $.map(pages, function (page) {
-                      //     var pageElement = $('<div>');
-
-                      //     //get the article title
-                      //     pageElement.append($('<h2>').text(page.title));
-
-                      //     //get the article image (if exists)
-                      //     if (page.thumbnail) pageElement.append($('<img>').attr('width', 150).attr('src', page.thumbnail.source));
-
-                      //     //get the article text
-                      //     pageElement.append($('<p>').text(page.extract));
-
-                      //     pageElement.append($('<hr>'));
-
-                      //     articles.append(pageElement);
-                      // });
-                  }
-              });
+                        }
+                }
+            });
 
           }
 
-            ajaxArticleData(word);
+          getImageForSuggest(suggestArray[j]);
+        
+        }
 
       }
-    }
+  }
 
 
   </script>
